@@ -62,22 +62,42 @@ const noBtn = document.getElementById("no");
 let yesSize = 18;
 let noSize = 18;
 
+// function to move NO without touching YES
+function moveNoButton() {
+    const yesRect = yesBtn.getBoundingClientRect();
+
+    let x, y;
+    do {
+        x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+        y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    } while (
+        x < yesRect.right &&
+        x + noBtn.offsetWidth > yesRect.left &&
+        y < yesRect.bottom &&
+        y + noBtn.offsetHeight > yesRect.top
+    );
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
 noBtn.addEventListener("mouseover", () => {
-    yesSize += 8;
-    noSize -= 2;
+    yesSize += 10;          // yes becomes BIG
+    noSize -= 2;            // no becomes small forever
 
     yesBtn.style.fontSize = yesSize + "px";
-    noBtn.style.fontSize = Math.max(noSize,8) + "px";
+    noBtn.style.fontSize = Math.max(noSize, 6) + "px";
 
-    // move the no button randomly
-    noBtn.style.top = Math.random()*80 + "px";
-    noBtn.style.left = Math.random()*80 + "%";
+    moveNoButton();         // jump away
 });
 
 yesBtn.addEventListener("click", () => {
-    document.body.innerHTML = "<h1>Yayyy ❤️ Best decision ever 😍</h1>";
+    document.body.innerHTML =
+        "<h1 style='font-family:sans-serif'>Yayyy ❤️ Best decision ever 😍</h1>";
 });
 </script>
+    
 
 </body>
 </html>
