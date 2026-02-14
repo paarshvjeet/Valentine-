@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+<style>
+    body{
+        margin:0;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:linear-gradient(135deg,#ff4e88,#ff9ecb);
+        font-family:Arial, Helvetica, sans-serif;
+        overflow:hidden;
+        text-align:center;
+        color:white;
+    }
+    h1{
+        font-size:2.2rem;
+        margin-bottom:40px;
+    }
+    .buttons{
+        position:relative;
+        height:120px;
+    }
+    button{
+        padding:12px 25px;
+        font-size:18px;
+        border:none;
+        border-radius:25px;
+        cursor:pointer;
+        transition:all 0.2s ease;
+    }
+    #yes{
+        background:#28c76f;
+        color:white;
+    }
+    #no{
+        background:#ff4d4d;
+        color:white;
+        position:absolute;
+        left:55%;
+    }
+</style>
+</head>
+<body>
+
+<div>
+    <h1>Vartika Sharma, will you be my Valentine? ❤️</h1>
+    <div class="buttons">
+        <button id="yes">Yes 💖</button>
+        <button id="no">No 😢</button>
+    </div>
+</div>
+
+<script>
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+
+let yesSize = 18;
+let noSize = 18;
+
+noBtn.addEventListener("mouseover", () => {
+    yesSize += 8;
+    noSize -= 2;
+
+    yesBtn.style.fontSize = yesSize + "px";
+    noBtn.style.fontSize = Math.max(noSize,8) + "px";
+
+    // move the no button randomly
+    noBtn.style.top = Math.random()*80 + "px";
+    noBtn.style.left = Math.random()*80 + "%";
+});
+
+yesBtn.addEventListener("click", () => {
+    document.body.innerHTML = "<h1>Yayyy ❤️ Best decision ever 😍</h1>";
+});
+</script>
+
+</body>
+</html>
