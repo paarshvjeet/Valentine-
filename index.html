@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Be My Valentine ❤️</title>
+
 <style>
     body{
         margin:0;
@@ -17,18 +18,47 @@
         text-align:center;
         color:white;
     }
+
+    .container{
+        width:100%;
+    }
+
     h1{
         font-size:2.2rem;
         margin-bottom:40px;
     }
-    .buttons{
-    position:relative;
-    height:120px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:20px;   /* space between YES and NO */
+
+    input{
+        padding:12px 18px;
+        border:none;
+        border-radius:25px;
+        font-size:18px;
+        outline:none;
+        width:250px;
+        text-align:center;
     }
+
+    .start-btn{
+        margin-top:20px;
+        padding:12px 25px;
+        font-size:18px;
+        border:none;
+        border-radius:25px;
+        background:#ffffff;
+        color:#ff4e88;
+        cursor:pointer;
+        font-weight:bold;
+    }
+
+    .buttons{
+        position:relative;
+        height:120px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:20px;
+    }
+
     button{
         padding:12px 25px;
         font-size:18px;
@@ -37,10 +67,12 @@
         cursor:pointer;
         transition:all 0.2s ease;
     }
+
     #yes{
         background:#28c76f;
         color:white;
     }
+
     #no{
         background:#ff4d4d;
         color:white;
@@ -48,59 +80,90 @@
     }
 </style>
 </head>
+
 <body>
 
-<div>
-    <h1>Name, will you be my Valentine? ❤️</h1>
-    <div class="buttons">
-        <button id="yes">Yes 💖</button>
-        <button id="no">No 😢</button>
-    </div>
+<div class="container" id="startPage">
+    <h1>Enter Your Valentine's Name ❤️</h1>
+
+    <input type="text" id="valentineName" placeholder="Enter name here">
+
+    <br>
+
+    <button class="start-btn" onclick="startValentine()">
+        Continue 💖
+    </button>
 </div>
 
 <script>
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
+function startValentine() {
 
-let yesSize = 18;
-let noSize = 18;
+    const name =
+        document.getElementById("valentineName").value.trim() || "Love";
 
-// function to move NO without touching YES
-function moveNoButton() {
-    const yesRect = yesBtn.getBoundingClientRect();
+    document.body.innerHTML = `
+    <div>
+        <h1>${name}, will you be my Valentine? ❤️</h1>
 
-    let x, y;
-    do {
-        x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-        y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-    } while (
-        x < yesRect.right &&
-        x + noBtn.offsetWidth > yesRect.left &&
-        y < yesRect.bottom &&
-        y + noBtn.offsetHeight > yesRect.top
-    );
+        <div class="buttons">
+            <button id="yes">Yes 💖</button>
+            <button id="no">No 😢</button>
+        </div>
+    </div>
+    `;
 
-    noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+
+    let yesSize = 18;
+    let noSize = 18;
+
+    // function to move NO without touching YES
+    function moveNoButton() {
+
+        const yesRect = yesBtn.getBoundingClientRect();
+
+        let x, y;
+
+        do {
+            x = Math.random() *
+                (window.innerWidth - noBtn.offsetWidth);
+
+            y = Math.random() *
+                (window.innerHeight - noBtn.offsetHeight);
+
+        } while (
+            x < yesRect.right &&
+            x + noBtn.offsetWidth > yesRect.left &&
+            y < yesRect.bottom &&
+            y + noBtn.offsetHeight > yesRect.top
+        );
+
+        noBtn.style.position = "fixed";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseover", () => {
+
+        yesSize += 10;
+        noSize -= 2;
+
+        yesBtn.style.fontSize = yesSize + "px";
+        noBtn.style.fontSize = Math.max(noSize, 6) + "px";
+
+        moveNoButton();
+    });
+
+    yesBtn.addEventListener("click", () => {
+
+        document.body.innerHTML =
+            `<h1 style='font-family:sans-serif'>
+                Yayyy ❤️ ${name} said YES 😍
+            </h1>`;
+    });
 }
-
-noBtn.addEventListener("mouseover", () => {
-    yesSize += 10;          // yes becomes BIG
-    noSize -= 2;            // no becomes small forever
-
-    yesBtn.style.fontSize = yesSize + "px";
-    noBtn.style.fontSize = Math.max(noSize, 6) + "px";
-
-    moveNoButton();         // jump away
-});
-
-yesBtn.addEventListener("click", () => {
-    document.body.innerHTML =
-        "<h1 style='font-family:sans-serif'>Yayyy ❤️ Best decision ever 😍</h1>";
-});
 </script>
-    
 
 </body>
 </html>
