@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine ❤️</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff4e88, #ff9ecb);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+        }
+
+        input {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            outline: none;
+            width: 260px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .create-btn {
+            background: white;
+            color: #ff4e88;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            position: relative;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #yes {
+            background: #28c76f;
+            color: white;
+        }
+
+        #no {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .link-box {
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            word-break: break-all;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app"></div>
+
+    <script>
+
+        const app = document.getElementById("app");
+
+        // Read name from URL
+        const params = new URLSearchParams(window.location.search);
+        const valentineName = params.get("name");
+
+        // If no name exists -> show form page
+        if (!valentineName) {
+
+            app.innerHTML = `
+    <div>
+        <h1>Enter Your Valentine's Name ❤️</h1>
+
+        <input type="text" id="nameInput" placeholder="Enter name here">
+
+        <br>
+
+        <button class="btn create-btn" onclick="generateLink()">
+            Create Valentine Link 💖
+        </button>
+
+        <div id="result"></div>
+    </div>
+`;
+        }
+
+        // If name exists -> show valentine page
+        else {
+
+            showValentinePage(valentineName);
+        }
+
+
+        function generateLink() {
+
+            const name = document.getElementById("nameInput").value.trim();
+
+            if (name === "") {
+                alert("Please enter a name ❤️");
+                return;
+            }
+
+            const encodedName = encodeURIComponent(name);
+
+            const uniqueLink = `${window.location.origin}${window.location.pathname}?name=${encodedName}`;
+
+            document.getElementById("result").innerHTML = `
+    <div class="link-box">
+        <p>Your unique Valentine link is:</p>
+        <a href="${uniqueLink}" target="_blank">
+            ${uniqueLink}
+        </a>
+        <br><br>
+        <button class="btn" onclick="copyLink('${uniqueLink}')">
+            Copy Link 📋
+        </button>
+    </div>
+`;
+        }
+
+        function copyLink(link) {
+
+            navigator.clipboard.writeText(link);
+
+            alert("Link copied successfully ❤️");
+        }
+
+        function showValentinePage(name) {
+
+            app.innerHTML = `
+    <div>
+        <h1>${name}, will you be my Valentine? ❤️</h1>
+
+        <div class="buttons">
+            <button class="btn" id="yes">Yes 💖</button>
+            <button class="btn" id="no">No 😢</button>
+        </div>
+    </div>
+`;
+
+            const yesBtn = document.getElementById("yes");
+            const noBtn = document.getElementById("no");
+
+            let yesSize = 18;
+            let noSize = 18;
+
+            function moveNoButton() {
+
+                const yesRect = yesBtn.getBoundingClientRect();
+
+                let x, y;
+
+                do {
+                    x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                    y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+                }
+                while (
+                    x < yesRect.right &&
+                    x + noBtn.offsetWidth > yesRect.left &&
+                    y < yesRect.bottom &&
+                    y + noBtn.offsetHeight > yesRect.top
+                );
+
+                noBtn.style.position = "fixed";
+                noBtn.style.left = x + "px";
+                noBtn.style.top = y + "px";
+            }
+
+            noBtn.addEventListener("mouseover", () => {
+
+                yesSize += 10;
+                noSize -= 2;
+
+                yesBtn.style.fontSize = yesSize + "px";
+                noBtn.style.fontSize = Math.max(noSize, 6) + "px";
+
+                moveNoButton();
+            });
+
+            yesBtn.addEventListener("click", () => {
+
+                document.body.innerHTML = `
+        <h1 style='font-family:sans-serif'>
+            Yayyy ❤️ Best Decision everr..!! 😍
+        </h1>
+    `;
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>
